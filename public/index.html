@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A SQL diagnostic and practice set that runs in your browser. Find your gaps, then practice them with problems checked the way LeetCode and interviewers check.">
+<title>SQL Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="sql/core.css">
+<style>
+.sub { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+.home { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 8px; }
+.home .card { display: flex; flex-direction: column; gap: 8px; }
+.home .card p { margin: 0; color: var(--muted); max-width: 60ch; }
+.home .card .actions { margin-top: auto; padding-top: 8px; }
+ul.points { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+ul.points li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">SQL Lab</p>
+    <h1>Find your SQL gaps, then practice them</h1>
+    <p class="sub">Everything runs in your browser on a real SQL engine. Nothing is sent anywhere, and your progress is saved on this device.</p>
+  </header>
+  <div class="home">
+    <div class="card">
+      <h2>1. Diagnostic</h2>
+      <p>14 query tasks, from warm-ups to window functions, and 11 quick concept checks. About 2–4 hours, and you can stop and come back.</p>
+      <ul class="points">
+        <li>Hidden tests probe edge cases: NULLs, ties, duplicates, date boundaries.</li>
+        <li>Ends in a skill report you can copy or download.</li>
+      </ul>
+      <div class="actions"><a class="btn primary" href="sql-lab.html">Take the diagnostic</a></div>
+    </div>
+    <div class="card">
+      <h2>2. Practice</h2>
+      <p>Problems by topic, from Easy to Hard. Each topic starts with a lesson that runs a worked example step by step.</p>
+      <ul class="points">
+        <li>A failed hidden test opens as a tab you can run against.</li>
+        <li>Solved problems stay, so you can solve them again and beat your time.</li>
+      </ul>
+      <div class="actions"><a class="btn primary" href="sql-practice.html">Start practicing</a></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:24px">Answers are checked the way LeetCode and interviewers check: column names must match the prompt, a requested order needs an <code>ORDER BY</code>, and rounding counts. The SQL is MySQL style, running on SQLite.</p>
+</div>
+</body>
+</html>

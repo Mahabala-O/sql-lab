@@ -1,0 +1,16 @@
+{
+  "name": "sql-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A SQL diagnostic and practice set that runs in the browser, with hidden edge-case tests and a check that every requirement in a prompt is tested.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node checks/harness.js && node checks/mutate.js && node checks/macros.js",
+    "e2e": "node checks/e2e.js",
+    "start": "npx --yes serve@14.2.4 public"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0",
+    "sql.js": "1.10.3"
+  }
+}
