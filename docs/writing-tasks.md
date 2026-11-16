@@ -34,6 +34,7 @@ Practice problems and diagnostic tasks have the same shape:
   muts: [                               // see section 3.2
     ['one total per product, not per name', 'GROUP BY p.product_id, p.category, p.name', 'GROUP BY p.name']
   ],
+  type: 'Funnel', scenario: 'SaaS · TaskPilot',  // practice only: shown as tags, like on StrataScratch
   hints: ['the approach', 'the skeleton', 'the key line'],
   explain: 'Shown with the reference solution once the problem is solved.'
 }
@@ -75,7 +76,27 @@ A chain of tie-breaks has to end in one of two ways: a key the data really tests
 - **In the diagnostic, tag each test with the one skill it checks.** The report counts a failed test against that skill only.
 - Good sources of tests: ties at every tie-break level; NULLs (especially in `NOT IN`); duplicate rows; two entities that share a name; rows outside a date range on both sides; month, year and leap-day boundaries; a group with one member; a group with no rows; ids that aren't in date order.
 
-## 5. Wrong and alternative answers
+## 5. A large generated test
+
+Every task has one hidden test with hundreds to thousands of rows. Instead of listing its rows, it builds them with code:
+
+```js
+{ name: '5,000 orders from 800 customers between November 2024 and February 2026', skill: 'agg', build: g => {
+  const rows = [];
+  for (let i = 0; i < 5000; i++) rows.push([1000 + i, g.int(1000, 1799), g.date('2024-11-01', '2026-02-28'),
+    g.weighted([['delivered', 75], ['shipped', 12], ['cancelled', 13]]), g.int(5, 300)]);
+  return g.insert('orders', rows);
+} }
+```
+
+`g` is seeded from the task id and the test's name, so the data is identical on every run and every device. It provides `g.int(lo, hi)`, `g.chance(p)`, `g.pick(list)`, `g.weighted([[value, weight], …])`, `g.shuffle(list)`, `g.date(from, to)`, `g.addDays(date, n)`, `g.daysBetween(a, b)`, `g.time()`, `g.names(n, unique)`, `g.pad(n)` and `g.insert(table, rows)`, which returns the INSERT statements.
+
+- **Start ids at 1000**, so generated rows never collide with the sample rows.
+- **Make it realistic, not just big.** Mix in every edge case the prompt cares about: duplicate names, NULLs where the schema allows them, ties at every tie-break level, same-day events, rows just outside each date range, month ends.
+- **Respect every promise the prompt makes.** If it says "no two reps tie on both", the generated data must not tie either. Nudge values until it holds (see `untie` in `practice-bank.js`).
+- **The checks enforce this.** `harness.js` rebuilds every table with its rows stored in reverse order. If the reference solution's answer changes, the data contains a tie the prompt doesn't settle: either fix the data, or add a tie-break to the prompt and the reference.
+
+## 6. Wrong and alternative answers
 
 In `checks/probes.js`, under the task's id:
 
@@ -89,7 +110,7 @@ In `checks/probes.js`, under the task's id:
 - `bad`: the query, and the start of the name of the test that must catch it (`null` means any test). Add every real mistake you see: the point is that it keeps failing after you change the data.
 - `good`: other correct approaches (a join instead of a window, MySQL date functions instead of SQLite ones). This stops the tests from accepting only one way of writing the answer.
 
-## 6. A practice topic
+## 7. A practice topic
 
 - **`lesson`**: `intro` (HTML), `setup`, `question`, `sql` (a worked example written as CTEs), `stepNotes` (one line per CTE name, plus `''` for the final result) and `outro`. The page runs the example and shows each step's output under its note.
 - **`checks`**: 3–5 quick multiple-choice questions that ask for a prediction. `answer` is the index of the right choice; `why` explains it.
@@ -101,7 +122,7 @@ In `checks/probes.js`, under the task's id:
 - **`followups`**: real problems to try afterwards, as `{ n, title, slug }` (the slug is the problem's URL name on LeetCode). Link to them; don't copy their text or data.
 - **Hints** come in three steps: the approach, then the skeleton, then the key line.
 
-## 7. Before you publish
+## 8. Before you publish
 
 ```bash
 npm test
@@ -111,4 +132,4 @@ npm test
 npm run e2e
 ```
 
-`npm test` runs `harness.js` (reference solutions, wrong and alternative answers), `mutate.js` (section 3) and `macros.js` (the engine). `npm run e2e` drives the pages in a headless browser. It needs Playwright's Chromium: run `npx playwright install chromium` once. Its checks name specific diagnostic tasks and the first practice topic, so update them if you change those.
+`npm test` runs `harness.js` (reference solutions, row-order independence, wrong and alternative answers), `mutate.js` (section 3) and `macros.js` (the engine). `npm run e2e` drives the pages in a headless browser. It needs Playwright's Chromium: run `npx playwright install chromium` once. Its checks name specific diagnostic tasks and the first practice topic, so update them if you change those.

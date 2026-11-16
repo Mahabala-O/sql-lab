@@ -17,11 +17,15 @@ It's built to be copied. Fork it, take the diagnostic, and add practice topics f
 
 **Diagnostic** (`sql-lab.html`): 14 query tasks, from an anti-join warm-up to gaps-and-islands, and 11 concept checks on window functions and NULLs. It ends in a skill report across 10 areas, which you can copy (with every final query included) or download as JSON.
 
-**Practice** (`sql-practice.html`): problems grouped by topic, Easy to Hard. Each topic starts with a lesson that runs a worked example and shows the output of every step. Solved problems stay in the list, with your solve count and best time, so you can come back and solve them again. The first topic, "Aggregate, then rank", has 8 problems and covers the pattern behind problems like *Seasonal Sales Analysis*: total, rank inside each group with tie-breaks, keep the top row.
+**Practice** (`sql-practice.html`): problems grouped by topic, Easy to Hard. Each topic starts with a lesson that runs a worked example and shows the output of every step. Solved problems stay in the list, with your solve count and best time, so you can come back and solve them again. Two topics so far, 15 problems:
+
+- **Aggregate, then rank** (8 problems): the pattern behind problems like *Seasonal Sales Analysis*: total, rank inside each group with tie-breaks, keep the top row.
+- **Growth, retention and funnels** (7 problems): business questions in the style of company interview questions, on realistic multi-table data for three fictional companies (healthcare operations, e-commerce and SaaS). No-show rates, monthly active customers, an activation funnel, revenue growth by region, new vs returning customers, cohort retention and overdue patients. Each problem is tagged with its type and scenario.
 
 **In every task:**
 
 - **Run** checks your query against the selected data; **Submit** checks it against the sample data and every hidden test.
+- **Every problem has a large hidden test**: hundreds to thousands of generated rows with realistic messiness (duplicate names, NULLs, ties at every level, same-day events, data on both sides of every date range), like the big test cases on LeetCode. Large tables show their first rows and a row count, results show the rows around the first difference, and the whole dataset can be copied as SQL.
 - **A hidden test that fails opens as a tab.** It shows the rows it adds and the expected output, and Run uses that data while you fix your query.
 - **Custom data:** add your own rows, and the expected output is worked out for you.
 - **Show one step:** if your query uses CTEs, a menu next to Run shows what any one of them returns.
@@ -37,7 +41,9 @@ As strictly as an interviewer would:
 - If the prompt asks for an order, the final query needs an `ORDER BY`, even when the rows happen to come out sorted.
 - Numbers are compared to 6 decimals, so a missing `ROUND` fails.
 
-**Every requirement in every prompt has a test behind it, and that's checked automatically.** `checks/mutate.js` breaks each reference solution one requirement at a time: it removes the final `ORDER BY`, flips each sort key, drops each `ROUND`, and applies each edit listed for that task (a filter, a boundary, a tie-break, the choice of `RANK` or `DENSE_RANK`, what the query groups by). Then it fails unless some test returns a wrong result. Right now that's 134 requirements across 22 tasks, all covered.
+**Every requirement in every prompt has a test behind it, and that's checked automatically.** `checks/mutate.js` breaks each reference solution one requirement at a time: it removes the final `ORDER BY`, flips each sort key, drops each `ROUND`, and applies each edit listed for that task (a filter, a boundary, a tie-break, the choice of `RANK` or `DENSE_RANK`, what the query groups by). Then it fails unless some test returns a wrong result. Right now that's 182 requirements across 29 tasks, all covered.
+
+**No answer depends on luck.** With hundreds of rows, ties a prompt doesn't settle become likely. `checks/harness.js` rebuilds every table with its rows stored in reverse order and fails if any reference solution's answer changes.
 
 This exists because the first version of the diagnostic let answers through that were missing an `ORDER BY` or a `ROUND`: the sample data happened to come out sorted and round. Writing tests by hand misses cases like these, so now the checks look for them.
 

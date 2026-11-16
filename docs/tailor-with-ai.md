@@ -40,6 +40,10 @@ practice-bank.js as the model for the format and tone. In particular:
 - 6–8 problems from Easy to Hard. Problem 2 should give me a starter query with
   only the new step left to write.
 - MySQL syntax in the reference solutions.
+- One large generated hidden test per problem (section 5 of writing-tasks.md):
+  hundreds of realistic rows that keep every promise the prompt makes.
+- A type and a scenario tag for each problem, set in a fictional company
+  from my field.
 - Every requirement in each prompt needs a hidden test that catches its
   absence, and a `muts` entry that removes it.
 - In checks/probes.js, add for each problem at least one wrong answer based on
