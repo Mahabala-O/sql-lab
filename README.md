@@ -22,6 +22,8 @@ It's built to be copied. Fork it, take the diagnostic, and add practice topics f
 - **Aggregate, then rank** (8 problems): the pattern behind problems like *Seasonal Sales Analysis*: total, rank inside each group with tie-breaks, keep the top row.
 - **Growth, retention and funnels** (7 problems): business questions in the style of company interview questions, on realistic multi-table data for three fictional companies (healthcare operations, e-commerce and SaaS). No-show rates, monthly active customers, an activation funnel, revenue growth by region, new vs returning customers, cohort retention and overdue patients. Each problem is tagged with its type and scenario.
 
+**Playground** (`sql-playground.html`): run any query, nothing graded. Pick a ready-made dataset (it starts with 74 Hollywood films from 2007–2011, NULLs and inconsistent studio names included) or paste your own setup script; MySQL scripts with `CREATE DATABASE`, `USE` and `AUTO_INCREMENT` work as they are. Each dataset comes with questions to try. To add a dataset, add an entry to `public/sql/datasets.js`.
+
 **In every task:**
 
 - **Run** checks your query against the selected data; **Submit** checks it against the sample data and every hidden test.
@@ -116,10 +118,12 @@ public/
   index.html            landing page
   sql-lab.html          the diagnostic
   sql-practice.html     the practice page
+  sql-playground.html   free-form querying on a dataset
   sql/core.js           engine, MySQL rewriter, answer checking, the task workspace
   sql/core.css          styles (light and dark)
   sql/lab-bank.js       diagnostic tasks and concept checks
   sql/practice-bank.js  practice topics, lessons and problems
+  sql/datasets.js       playground datasets
 checks/                 the checks above
 docs/                   writing tasks, tailoring with AI, screenshots
 ```
